@@ -1,0 +1,8 @@
+{
+	"editor.formatOnType": true,
+	// The number of spaces a tab is equal to. This setting is overridden
+	"editor.tabSize": 2,
+	// Insert spaces when pressing Tab. This setting is overriden
+	"editor.insertSpaces": false,
+	"files.trimTrailingWhitespace": true
+}
