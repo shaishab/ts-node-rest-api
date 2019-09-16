@@ -13,6 +13,7 @@ import cors from 'cors';
 // import assets from '../assets/all';
 
 import * as routers from '../../routes';
+import errorMiddleware from '../../middleware/error.middleware';
 
 class Express {
 	/**
@@ -28,6 +29,7 @@ class Express {
 		this.app = express();
 		this.initMiddleware();
 		this.mountRoutes();
+		this.initializeErrorHandling();
 	}
 
 	private initMiddleware(): void {
@@ -104,6 +106,10 @@ class Express {
 		// 	console.log('Routes=======', Routes)
 		// 	new Routes().routes(this.app);
 		// }
+	}
+
+	private initializeErrorHandling() {
+		this.app.use(errorMiddleware);
 	}
 }
 

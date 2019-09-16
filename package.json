@@ -4,9 +4,15 @@
   "description": "This is the simple example or starter to create rest API using express with typescript.",
   "main": "server.js",
   "scripts": {
+    "start:dev": "cross-env NODE_ENV=development node ./dist/server.js",
+    "start:test": "cross-env NODE_ENV=test node ./dist/server.js",
+    "start:prod": "cross-env NODE_ENV=productino node ./dist/server.js",
     "tsc": "tsc",
+    "dev": "ts-node-dev --respawn --transpileOnly ./src/server.ts",
     "build": "rm -rf ./dist/ && tsc",
-    "dev": "ts-node-dev --respawn --transpileOnly ./src/server.ts"
+    "build:dev": "npm run build && npm run start:dev",
+    "build:test": "npm run build && npm run start:test",
+    "build:prod": "npm run build && npm run start:prod"
   },
   "keywords": [
     "nodejs",
@@ -32,6 +38,7 @@
     "@types/method-override": "0.0.31",
     "@types/mongoose": "^5.5.17",
     "@types/node": "^12.7.4",
+    "cross-env": "^5.2.1",
     "ts-node-dev": "^1.0.0-pre.42",
     "tslint": "^5.19.0",
     "tslint-config-prettier": "^1.18.0",

@@ -12,7 +12,7 @@ export class HealthRouter {
 		this.healthController = new HealthController();
 	}
 
-	public routes(app:Application): void {
+	public routes(app: Application): void {
 		app.route(this.url + '/')
 			.get((req: Request, res: Response) => {
 				return res.status(200).send({ message: 'welcome' });
