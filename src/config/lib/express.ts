@@ -12,7 +12,7 @@ import cors from 'cors';
 // import { union, isString, isArray } from 'lodash';
 // import assets from '../assets/all';
 
-import DynamicRouteLoader from '../../routes'
+import * as routers from '../../routes';
 
 class Express {
 	/**
@@ -24,13 +24,13 @@ class Express {
 	/**
 	 * Initializes the express server
 	 */
-	constructor () {
+	constructor() {
 		this.app = express();
 		this.initMiddleware();
 		this.mountRoutes();
 	}
 
-	private initMiddleware (): void {
+	private initMiddleware(): void {
 		this.app.set('showStackError', true);
 
 		// secure apps by setting various HTTP headers
@@ -42,7 +42,7 @@ class Express {
 
 
 		// Passing the request url to environment locals
-		this.app.use((req:any, res:any, next:any) => {
+		this.app.use((req: any, res: any, next: any) => {
 			res.locals.url = req.protocol + '://' + req.headers.host + req.url;
 			next();
 		});
@@ -90,12 +90,11 @@ class Express {
 	 * Mounts all the defined routes
 	 */
 	private async mountRoutes(): Promise<any> {
-
-		console.log('DynamicRoutess=====', DynamicRouteLoader);
-		console.log('DynamicRoutess=====', DynamicRouteLoader.routes);
-		for (let routeName in DynamicRouteLoader.routes) {
-			console.log('routeName======', routeName);
-			new DynamicRouteLoader(routeName.toString(), this.app);
+		for (const name in routers) {
+			if (routers.hasOwnProperty(name)) {
+				const router = (routers as any)[name];
+				new router().routes(this.app);
+			}
 		}
 		// for (let routePath of this.getGlobedFiles(appRoot.path + assets.routes)) {
 		// 	console.log('route path===',routePath);

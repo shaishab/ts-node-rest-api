@@ -2,7 +2,7 @@ import { Application, Request, Response } from "express";
 import config from '../config/config';
 import HealthController from '../controllers/health.controller';
 
-export default class HealthRoutes {
+export class HealthRouter {
 
 	public url: string;
 	public healthController: HealthController;
