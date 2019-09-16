@@ -1,3 +1,4 @@
+import path from 'path';
 module.exports = {
 	app: {
 		title: 'ts node rest api',
@@ -18,5 +19,7 @@ module.exports = {
 		subject: 'node@users',
 		audience: 'https://tsnode/',
 		algorithm: 'RS256', // RSASSA [ "RS256", "RS384", "RS512" ]
+		rsaPrivateKey: path.join(__dirname, '../keys/private.key'),
+		rsaPublicKey: path.join(__dirname, '../keys/public.key')
 	},
 };

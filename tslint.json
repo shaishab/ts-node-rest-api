@@ -41,6 +41,8 @@
     "use-pipe-transform-interface": true,
     "one-variable-per-declaration": false,
     "directive-class-suffix": true,
-    "eofline": true
+    "eofline": true,
+    "quotes": ["error", "single"],
+    "semi": ["error", "always"]
   }
 }

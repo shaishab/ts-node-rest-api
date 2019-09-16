@@ -1,8 +1,9 @@
 import { Application, Request, Response } from "express";
+import IRoutes from '../interfaces/route.interface'
 import config from '../config/config';
 import HealthController from '../controllers/health.controller';
 
-export class HealthRouter {
+export class HealthRouter implements IRoutes {
 
 	public url: string;
 	public healthController: HealthController;
