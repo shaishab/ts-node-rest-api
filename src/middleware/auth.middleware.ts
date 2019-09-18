@@ -163,7 +163,7 @@ export default class AuthMiddleware {
       return next();
     } catch (err) {
       // console.log('no token err==========', err);
-      return next(new CatchException(err));
+      return next(new AuthTokenInvalidException(err));
     }
   }
 

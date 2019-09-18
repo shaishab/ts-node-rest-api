@@ -17,7 +17,7 @@ export class AuthenticationService {
     } catch (err) {
       return new CatchException(err);
     }
-  };
+  }
 
   static async getUser(req: Request, res: Response): Promise<any> {
     try {
@@ -25,7 +25,7 @@ export class AuthenticationService {
     } catch (err) {
       return new CatchException(err);
     }
-  };
+  }
 }
 
 export default AuthenticationService;
