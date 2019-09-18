@@ -20,7 +20,7 @@ export default class AuthMiddleware {
     this.cryptoHelper = new CryptoHelper();
   }
 
-  private jwtSign(payload: any): any {
+  private async jwtSign(payload: any): Promise<any> {
     let privateKEY = fs.readFileSync(config.session.rsaPrivateKey, 'utf8');
     let verifyOptions = {
       issuer: config.session.issuer,
@@ -32,7 +32,7 @@ export default class AuthMiddleware {
     return jwt.sign(payload, privateKEY, verifyOptions);
   }
 
-  private jwtVerify(token: string): any {
+  private async jwtVerify(token: string): Promise<any> {
     let publicKEY = fs.readFileSync(config.session.rsaPublicKey, 'utf8');
     let verifyOptions = {
       issuer: config.session.issuer,
@@ -53,8 +53,9 @@ export default class AuthMiddleware {
     }
   }
 
-  private generateNewToken(req: Request): string {
-    let deviceId: string = req.headers && req.headers.deviceId ? req.headers.deviceId.toString() : '';
+  private async generateNewToken(req: Request): Promise<string> {
+    console.log('req.headers=====', req.headers);
+    let deviceId: string = req.headers && req.headers.deviceid ? req.headers.deviceid.toString() : '';
     let contextId: string = uuidv4();
 
     let tokenInfo: IAuthToken = {
@@ -82,8 +83,8 @@ export default class AuthMiddleware {
         }
       }
 
-      let token: string = this.generateNewToken(req);
-      console.log('generated new token', token);
+      let token: string = await this.generateNewToken(req);
+      console.log('generated new token');
       return token;
 
     } catch (err) {
@@ -129,18 +130,18 @@ export default class AuthMiddleware {
     }
   };
 
-  public async isAuthorized(req: RequestWithToken, res: Response, next: NextFunction): Promise<any> {
+  public isAuthorized = async (req: RequestWithToken, res: Response, next: NextFunction) => {
     try {
       let reqToken = req.cookies.authToken;
       if (!reqToken) {
-        next(new AuthTokenMissingException());
+        return next(new AuthTokenMissingException());
       }
 
-      let decoded = this.jwtVerify(reqToken);
+      let decoded = await this.jwtVerify(reqToken);
       decoded = this.cryptoHelper.decrypt(decoded.data, config.session.tokenEncryptionKey);
       decoded = JSON.parse(decoded);
       if (decoded.deviceId !== req.headers.deviceid) {
-        next(new NotAuthorizedException());
+        return next(new NotAuthorizedException());
       }
       let tokenInfo: IAuthToken = {
         contextId: decoded.contextId,
@@ -159,26 +160,26 @@ export default class AuthMiddleware {
       res.cookie('authToken', signedToken, { httpOnly: true });
 
       req.token = tokenInfo;
-      next();
+      return next();
     } catch (err) {
-      console.log('no token err==========', err);
-      next(new CatchException(err));
+      // console.log('no token err==========', err);
+      return next(new CatchException(err));
     }
   }
 
-  public async isAuthenticated(req: RequestWithToken, res: Response, next: NextFunction): Promise<any> {
+  public isAuthenticated = async (req: RequestWithToken, res: Response, next: NextFunction): Promise<any> => {
     try {
       /**
        * we are assumeing that userId will be available after successfully logged only
        */
       if (req.token && req.token.userId) {
-        next();
+        return next();
       } else {
-        next(new NotAuthenticatedException());
+        return next(new NotAuthenticatedException());
       }
     } catch (err) {
-      console.log('no userId==========', err);
-      next(new CatchException(err));
+      // console.log('no userId==========', err);
+      return next(new CatchException(err));
     }
   };
 }

@@ -5,7 +5,6 @@ let num = Math.floor(Math.random() * 10000);
 class HealthController {
 
 	constructor() {
-		console.log('load controller')
 	}
 
 	async getHealth(req: Request, res: Response): Promise<any> {

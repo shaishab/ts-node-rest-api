@@ -14,10 +14,10 @@ export default class CryptoHelper {
 		return Buffer.concat([iv, cipherText]);
 	}
 
-	public decrypt(text: string, encryptionKey: string): Buffer {
-		let bufferText = Buffer.from(text);
-		let iv = bufferText.slice(0, 16);
-		bufferText = bufferText.slice(16);
+	public decrypt(text: any, encryptionKey: string): Buffer {
+		text = Buffer.from(text);
+		let iv = text.slice(0, 16);
+		text = text.slice(16);
 
 		const key = this.getHashedKey(encryptionKey);
 		const decipher = createDecipheriv('aes256', key, iv);

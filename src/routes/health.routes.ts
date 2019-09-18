@@ -1,15 +1,12 @@
 import { Application, Request, Response } from "express";
-import IRoutes from '../interfaces/route.interface'
-import config from '../config/config';
+import BaseRoutes from './base.routes';
 import HealthController from '../controllers/health.controller';
 
-export class HealthRouter implements IRoutes {
-
-	public url: string;
+export class HealthRouter extends BaseRoutes {
 	public healthController: HealthController;
 
 	constructor() {
-		this.url = config.app.baseUrl + config.app.version;
+		super();
 		this.healthController = new HealthController();
 	}
 
